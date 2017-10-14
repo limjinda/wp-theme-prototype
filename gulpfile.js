@@ -70,7 +70,9 @@ gulp.task('javascript', () => {
 		)
 		.pipe(
 			uglify({
-				preserveComments: 'license'
+				output: {
+					comments: 'some'
+				}
 			})
 		)
 		.pipe(gulp.dest('./js/'))
