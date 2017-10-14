@@ -32,4 +32,66 @@ let banner = [
 	''
 ].join('\n');
 
+gulp.task('scss', () => {
+	return gulp
+		.src(['./scss/**/*.scss'])
+		.pipe(plumber())
+		.pipe(sass().on('error', sass.logError))
+		.pipe(
+			autoprefixer({
+				browsers: ['last 2 versions']
+			})
+		)
+		.pipe(
+			cleanCSS({
+				keepSpecialComments: 0
+			})
+		)
+		.pipe(rename('style.css'))
+		.pipe(
+			purify(['./**/*.php'], {
+				minify: true,
+				info: true
+			})
+		)
+		.pipe(header(banner))
+		.pipe(gulp.dest('./'))
+		.pipe(livereload());
+});
+
+gulp.task('javascript', () => {
+	return gulp
+		.src(['./js/vendor/modernizr-2.8.3-respond-1.4.2.min.js', './js/main.js'])
+		.pipe(plumber())
+		.pipe(
+			concat('clients.js', {
+				newLine: ';'
+			})
+		)
+		.pipe(
+			uglify({
+				preserveComments: 'license'
+			})
+		)
+		.pipe(gulp.dest('./js/'))
+		.pipe(livereload());
+});
+
+gulp.task('images', () => {
+	return gulp
+		.src('./img/*')
+		.pipe(
+			imagemin({
+				progressive: true
+			})
+		)
+		.pipe(gulp.dest('./img'));
+});
+
+gulp.task('watch', () => {
+	livereload.listen();
+	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss'));
+	gulp.watch(['./js/main.js'], () => runSequence('javascript'));
+});
+
 gulp.task('default', ['scss', 'javascript', 'images', 'watch']);
