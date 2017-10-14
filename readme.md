@@ -1,5 +1,7 @@
 # WordPress Theme prototype
 
+![Screenshot](screenshot.png)
+
 with Gulp asset pipeline to automate build, clean and livereload your browser when code changes. Include all of these modern libraries:
 
 * Uglify
