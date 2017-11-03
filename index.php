@@ -8,7 +8,7 @@
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<?php wp_head(); ?>
 	</head>
-	<body>
+	<body <?php body_class() ?>>
 		<h1>Hello</h1>
 		<p>Thanks for using our starter theme!</p>
 		<?php wp_footer(); ?>
