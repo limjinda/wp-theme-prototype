@@ -18,9 +18,10 @@ that's all enough for frontend developer who want to develop a WordPress theme.
 ## 👨🏻‍💻 Usage
 
 * Clone this project to your `wp-content/themes` and rename it as you want
-* run `npm install` or `yarn install`
-* open **gulpfile.js** and change banner string to yours 
+* run `npm install`
+* open **gulpfile.js** and update your banner string
 * run `gulp` and start coding
+* for production, don't forget to remove remote repository by `git remote remove origin`
 
 ## ⚠️  Header comment
 
