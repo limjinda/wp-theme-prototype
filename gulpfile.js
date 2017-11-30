@@ -90,6 +90,52 @@ gulp.task('images', () => {
 		.pipe(gulp.dest('./img'));
 });
 
+/**
+ * Task - Library SCSS
+ * Compile vendor scss file into plain CSS file
+ *** If you use bootstrap-scss with npm install bootstrap-sass
+ *** uncomment this line below to let gulp compile to bootstrap.min.css
+ */
+gulp.task('lib-scss', () => {
+	return gulp.src('').pipe(
+		shell([
+			// 'sass --scss -t compressed ./node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss ./css/bootstrap.min.css'
+		])
+	);
+});
+
+/**
+ * Task - Library CSS
+ * Add your vendor stylesheet files here
+ *** eg. bootstrap(from lib-scss task) and magnificpopup
+ */
+gulp.task('lib-css', () => {
+	return gulp
+		.src([
+			// './css/bootstrap.min.css',
+			// './node_modules/magnific-popup/dist/magnific-popup.css'
+		])
+		.pipe(concatCSS('vendor.css'))
+		.pipe(
+			cleanCSS({
+				keepSpecialComments: 0
+			})
+		)
+		.pipe(gulp.dest('./css/'));
+});
+
+/**
+ * Task - Library clean
+ * remove unused file from another task.
+ */
+gulp.task('lib-clean', () => {
+	return gulp
+		.src(['./css/bootstrap.min.css', './css/bootstrap.min.css.map'], {
+			read: false
+		})
+		.pipe(clean());
+});
+
 gulp.task('watch', () => {
 	livereload.listen();
 	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss'));
@@ -97,3 +143,7 @@ gulp.task('watch', () => {
 });
 
 gulp.task('default', ['scss', 'javascript', 'images', 'watch']);
+gulp.task('build-lib-css', () => {
+	runSequence('lib-scss', 'lib-css', 'lib-clean');
+});
+
