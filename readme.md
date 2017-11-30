@@ -35,6 +35,6 @@ So if header comment is missing or incorrect, you will not see this theme in App
 
 ## Adding Libraries
 
-When you want to use another libraries eg. bootstrap, magnific-popup, owl-carousel etc, to this project. Just install with npm install, bower install or yarn install like you used to. Then add the library stylesheet path to *lib-css* and *javascript* task for the script.
+When you want to use another libraries eg. bootstrap, magnific-popup, owl-carousel etc, to this project. Just install with npm install, bower install or yarn install like you used to. Then add the library stylesheet path to **lib-css** and **javascript** for the scripts.
 
-and don't forget to run `lib-scss` every time when you added new library 🧐
+don't forget to run `lib-scss` every time when you added new library 🧐
