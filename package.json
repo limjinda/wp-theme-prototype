@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "WordPress theme prototype with Gulp asset pipeline includes SASS, Uglify, Imagemin and more",
   "main": "index.php",
+  "scripts": {
+    "dev": "gulp",
+    "vendor": "gulp build-lib-css"
+  },
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
   "author": "Jirayu Limjinda <jir4yu.l@gmail.com>",
   "license": "MIT",
@@ -21,5 +25,8 @@
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^4.3.11",
     "run-sequence": "^2.2.0"
+  },
+  "devDependencies": {
+    "gulp-shell": "^0.6.3"
   }
 }

@@ -14,6 +14,7 @@ let imagemin = require('gulp-imagemin');
 let autoprefixer = require('gulp-autoprefixer');
 let livereload = require('gulp-livereload');
 let purify = require('gulp-purifycss');
+let shell = require('gulp-shell');
 
 let banner = [
 	'/**',
