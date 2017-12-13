@@ -1,22 +1,24 @@
 'use strict';
 
-let gulp = require('gulp');
-let plumber = require('gulp-plumber');
-let rename = require('gulp-rename');
-let header = require('gulp-header');
-let uglify = require('gulp-uglify');
-let concat = require('gulp-concat');
-let cleanCSS = require('gulp-clean-css');
-let sass = require('gulp-sass');
-let watch = require('gulp-watch');
-let runSequence = require('run-sequence');
-let imagemin = require('gulp-imagemin');
-let autoprefixer = require('gulp-autoprefixer');
-let livereload = require('gulp-livereload');
-let purify = require('gulp-purifycss');
-let shell = require('gulp-shell');
+const gulp = require('gulp');
+const plumber = require('gulp-plumber');
+const rename = require('gulp-rename');
+const header = require('gulp-header');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const cleanCSS = require('gulp-clean-css');
+const sass = require('gulp-sass');
+const watch = require('gulp-watch');
+const runSequence = require('run-sequence');
+const imagemin = require('gulp-imagemin');
+const autoprefixer = require('gulp-autoprefixer');
+const livereload = require('gulp-livereload');
+const purify = require('gulp-purifycss');
+const shell = require('gulp-shell');
+const concatCSS = require('gulp-concat-css');
+const clean = require('gulp-clean');
 
-let banner = [
+const banner = [
 	'/**',
 	'/*!',
 	'Theme Name: wp-theme-prototype',
