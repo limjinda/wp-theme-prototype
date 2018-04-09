@@ -29,6 +29,6 @@
   "devDependencies": {
     "gulp-clean": "^0.3.2",
     "gulp-concat-css": "^2.3.0",
-    "gulp-shell": "^0.6.3"
+    "gulp-shell": "^0.6.5"
   }
 }
