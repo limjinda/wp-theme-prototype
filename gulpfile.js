@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const plumber = require('gulp-plumber');
 const rename = require('gulp-rename');
 const header = require('gulp-header');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
@@ -13,7 +13,6 @@ const runSequence = require('run-sequence');
 const imagemin = require('gulp-imagemin');
 const autoprefixer = require('gulp-autoprefixer');
 const livereload = require('gulp-livereload');
-const purify = require('gulp-purifycss');
 const shell = require('gulp-shell');
 const concatCSS = require('gulp-concat-css');
 const clean = require('gulp-clean');
@@ -47,16 +46,10 @@ gulp.task('scss', () => {
 		)
 		.pipe(
 			cleanCSS({
-				keepSpecialComments: 0
+				specialComments: 'all'
 			})
 		)
 		.pipe(rename('style.css'))
-		.pipe(
-			purify(['./**/*.php'], {
-				minify: true,
-				info: true
-			})
-		)
 		.pipe(header(banner))
 		.pipe(gulp.dest('./'))
 		.pipe(livereload());
@@ -102,7 +95,7 @@ gulp.task('images', () => {
 gulp.task('lib-scss', () => {
 	return gulp.src('').pipe(
 		shell([
-			// 'sass --scss -t compressed ./node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss ./css/bootstrap.min.css'
+			// 'sass --style=compressed ./node_modules/bootstrap/scss/bootstrap.scss ./css/bootstrap.min.css'
 		])
 	);
 });
@@ -140,7 +133,7 @@ gulp.task('lib-clean', () => {
 });
 
 gulp.task('watch', () => {
-	livereload.listen();
+	livereload.listen({ start: true });
 	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss'));
 	gulp.watch(['./js/main.js'], () => runSequence('javascript'));
 });
