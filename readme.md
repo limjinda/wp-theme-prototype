@@ -13,7 +13,6 @@ with Gulp asset pipeline to automate build, clean and livereload your browser wh
 * Livereload
 * Imagemin
 * Autoprefixer
-* PurifyCSS
 
 that's all enough for frontend developer who want to develop a WordPress theme.
 
