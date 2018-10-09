@@ -8,7 +8,6 @@ const uglify = require('gulp-uglify-es').default;
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
-const watch = require('gulp-watch');
 const runSequence = require('run-sequence');
 const imagemin = require('gulp-imagemin');
 const autoprefixer = require('gulp-autoprefixer');
@@ -57,7 +56,7 @@ gulp.task('scss', () => {
 
 gulp.task('javascript', () => {
 	return gulp
-		.src(['./js/vendor/modernizr-2.8.3-respond-1.4.2.min.js', './js/main.js'])
+		.src(['./js/vendor/modernizr-3.6.0.min.js', './js/main.js'])
 		.pipe(plumber())
 		.pipe(
 			concat('clients.js', {

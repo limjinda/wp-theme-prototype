@@ -1,0 +1,18 @@
+{
+	"parserOptions": {
+		"ecmaVersion": 6
+	},
+	"env": {
+		"amd": true,
+		"jquery": true,
+		"es6": true,
+		"browser": true
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"semi": ["error", "always"],
+		"quotes": ["error", "single"],
+		"eqeqeq": ["error", "always"],
+		"curly": ["error", "multi"]
+	}
+}
