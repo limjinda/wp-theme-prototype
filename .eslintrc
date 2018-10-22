@@ -12,7 +12,6 @@
 	"rules": {
 		"semi": ["error", "always"],
 		"quotes": ["error", "single"],
-		"eqeqeq": ["error", "always"],
-		"curly": ["error", "multi"]
+		"eqeqeq": ["error", "always"]
 	}
 }

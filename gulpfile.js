@@ -111,11 +111,13 @@ gulp.task('lib-css', () => {
 			// './node_modules/magnific-popup/dist/magnific-popup.css'
 		])
 		.pipe(concatCSS('vendor.css'))
-		.pipe(
-			cleanCSS({
-				keepSpecialComments: 0
-			})
-		)
+		.pipe(cleanCSS({
+			level: {
+				1: {
+					specialComments: 0 
+				}
+			}
+		}))
 		.pipe(gulp.dest('./css/'));
 });
 

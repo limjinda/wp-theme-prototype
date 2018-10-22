@@ -1,4 +1,4 @@
 /* global */
-/* export */
+/* exported */
 
 'use strict';
