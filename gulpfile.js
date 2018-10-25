@@ -45,7 +45,11 @@ gulp.task('scss', () => {
 		)
 		.pipe(
 			cleanCSS({
-				specialComments: 'all'
+				level: {
+					1: {
+						'specialComments': 'some'
+					}
+				}
 			})
 		)
 		.pipe(rename('style.css'))
