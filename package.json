@@ -1,6 +1,6 @@
 {
   "name": "wp-theme-prototype",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "WordPress theme prototype with Gulp asset pipeline includes SASS, Uglify, Imagemin and more",
   "main": "index.php",
   "scripts": {
