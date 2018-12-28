@@ -101,6 +101,11 @@ gulp.task('images', () => {
 		.pipe(gulp.dest('./img'));
 });
 
+gulp.task('php', () => {
+	return gulp.src([''])
+		.pipe(livereload());
+})
+
 /**
  * Task - Library SCSS
  * Compile vendor scss file into plain CSS file
