@@ -43,16 +43,25 @@ gulp.task('scss', () => {
 				browsers: ['last 2 versions']
 			})
 		)
-		.pipe(
-			cleanCSS({
-				level: {
-					1: {
-						'specialComments': 'some'
-					}
-				}
-			})
-		)
 		.pipe(rename('style.css'))
+		.pipe(gulp.dest('./'));
+});
+
+gulp.task('combine-vendor-style', () => {
+	return gulp
+		.src([
+			'./css/vendor.css',
+			'./style.css'
+		])
+		.pipe(concatCSS('style.css'))
+		.pipe(cleanCSS({
+			rebaseTo: './',
+			level: {
+				1: {
+					specialComments: 'some',
+				}
+			}
+		}))
 		.pipe(header(banner))
 		.pipe(gulp.dest('./'))
 		.pipe(livereload());
@@ -60,7 +69,10 @@ gulp.task('scss', () => {
 
 gulp.task('javascript', () => {
 	return gulp
-		.src(['./js/vendor/modernizr-3.6.0.min.js', './js/main.js'])
+		.src([
+			'./js/vendor/modernizr-3.6.0.min.js', 
+			'./js/main.js'
+		])
 		.pipe(plumber())
 		.pipe(
 			concat('clients.js', {
@@ -115,13 +127,6 @@ gulp.task('lib-css', () => {
 			// './node_modules/magnific-popup/dist/magnific-popup.css'
 		])
 		.pipe(concatCSS('vendor.css'))
-		.pipe(cleanCSS({
-			level: {
-				1: {
-					specialComments: 0 
-				}
-			}
-		}))
 		.pipe(gulp.dest('./css/'));
 });
 
@@ -139,11 +144,12 @@ gulp.task('lib-clean', () => {
 
 gulp.task('watch', () => {
 	livereload.listen({ start: true });
-	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss'));
+	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss', 'combine-vendor-style'));
 	gulp.watch(['./js/main.js'], () => runSequence('javascript'));
+	gulp.watch(['./**/*.php'], () => runSequence('php'));
 });
 
-gulp.task('default', ['scss', 'javascript', 'images', 'watch']);
+gulp.task('default', ['scss', 'combine-vendor-style', 'javascript', 'images', 'watch']);
 gulp.task('build-lib-css', () => {
 	runSequence('lib-scss', 'lib-css', 'lib-clean');
 });
