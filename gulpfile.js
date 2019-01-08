@@ -53,7 +53,9 @@ gulp.task('combine-vendor-style', () => {
 			'./css/vendor.css',
 			'./style.css'
 		])
-		.pipe(concatCSS('style.css'))
+		.pipe(concatCSS('style.css', {
+			rebaseUrls: false
+		} ))
 		.pipe(cleanCSS({
 			rebaseTo: './',
 			level: {
