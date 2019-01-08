@@ -6,15 +6,14 @@ const rename = require('gulp-rename');
 const header = require('gulp-header');
 const uglify = require('gulp-uglify-es').default;
 const concat = require('gulp-concat');
-const cleanCSS = require('gulp-clean-css');
 const sass = require('gulp-sass');
 const runSequence = require('run-sequence');
 const imagemin = require('gulp-imagemin');
 const autoprefixer = require('gulp-autoprefixer');
 const livereload = require('gulp-livereload');
 const shell = require('gulp-shell');
-const concatCSS = require('gulp-concat-css');
 const clean = require('gulp-clean');
+const minifyCSS = require('gulp-minify-css');
 
 const banner = [
 	'/**',
@@ -38,32 +37,23 @@ gulp.task('scss', () => {
 		.src(['./scss/**/*.scss'])
 		.pipe(plumber())
 		.pipe(sass().on('error', sass.logError))
-		.pipe(
-			autoprefixer({
-				browsers: ['last 2 versions']
-			})
-		)
 		.pipe(rename('style.css'))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('./'))
 });
 
-gulp.task('combine-vendor-style', () => {
+gulp.task('combine-css', () => {
 	return gulp
 		.src([
 			'./css/vendor.css',
 			'./style.css'
 		])
-		.pipe(concatCSS('style.css', {
-			rebaseUrls: false
-		} ))
-		.pipe(cleanCSS({
-			rebaseTo: './',
-			level: {
-				1: {
-					specialComments: 'some',
-				}
-			}
-		}))
+		.pipe(minifyCSS())
+		.pipe(
+			autoprefixer({
+				browsers: ['last 2 versions']
+			})
+		)
+		.pipe(concat('style.css'))
 		.pipe(header(banner))
 		.pipe(gulp.dest('./'))
 		.pipe(livereload());
@@ -103,11 +93,6 @@ gulp.task('images', () => {
 		.pipe(gulp.dest('./img'));
 });
 
-gulp.task('php', () => {
-	return gulp.src([''])
-		.pipe(livereload());
-})
-
 /**
  * Task - Library SCSS
  * Compile vendor scss file into plain CSS file
@@ -133,7 +118,7 @@ gulp.task('lib-css', () => {
 			// './css/bootstrap.min.css',
 			// './node_modules/magnific-popup/dist/magnific-popup.css'
 		])
-		.pipe(concatCSS('vendor.css'))
+		.pipe(concat('vendor.css'))
 		.pipe(gulp.dest('./css/'));
 });
 
@@ -143,20 +128,28 @@ gulp.task('lib-css', () => {
  */
 gulp.task('lib-clean', () => {
 	return gulp
-		.src(['./css/bootstrap.min.css', './css/bootstrap.min.css.map'], {
+		.src([
+			'./css/bootstrap.min.css', 
+			'./css/bootstrap.min.css.map'
+		], {
 			read: false
 		})
 		.pipe(clean());
 });
 
+gulp.task('php', () => {
+	return gulp.src([''])
+		.pipe(livereload());
+})
+
 gulp.task('watch', () => {
 	livereload.listen({ start: true });
-	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss', 'combine-vendor-style'));
+	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss', 'combine-css'));
 	gulp.watch(['./js/main.js'], () => runSequence('javascript'));
 	gulp.watch(['./**/*.php'], () => runSequence('php'));
 });
 
-gulp.task('default', ['scss', 'combine-vendor-style', 'javascript', 'images', 'watch']);
+gulp.task('default', ['scss', 'combine-css', 'javascript', 'images', 'watch']);
 gulp.task('build-lib-css', () => {
 	runSequence('lib-scss', 'lib-css', 'lib-clean');
 });
