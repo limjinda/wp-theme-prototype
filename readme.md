@@ -1,18 +1,20 @@
-# WordPress Theme prototype
+# WordPress Theme Prototype
 
 ![Screenshot](screenshot.png)
 
+Start developing new WordPress theme with ease.
 
+This template will help setting up basic file structures and things you need to build your own WordPress theme. We use Gulp generator to compile and compress all assets on the fly.
 
-with Gulp asset pipeline to automate build, clean and livereload your browser when code changes. Include all of these modern libraries:
+## What included?
 
-* Uglify
-* Concat
-* CleanCSS
-* Watch
-* Livereload
-* Imagemin
+* Modernizr
+* Flexibility
 * Autoprefixer
+* CSS Minify
+* JS Uglify
+* Imagemin
+* Livereload
 
 that's all enough for frontend developer who want to develop a WordPress theme.
 

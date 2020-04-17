@@ -11,10 +11,16 @@
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
   "author": "Jirayu Limjinda <jir4yu.l@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "eslint": "^5.6.1",
     "flexibility": "^2.0.1",
     "gulp": "=3.9.1",
     "gulp-autoprefixer": "^4.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
     "gulp-header": "^1.8.9",
     "gulp-imagemin": "^4.1.0",
@@ -23,13 +29,14 @@
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^3.1.0",
-    "gulp-uglify-es": "^1.0.4",
+    "gulp-shell": "^0.6.5",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-terser": "^1.2.0",
     "gulp-watch": "^5.0.1",
+    "imagemin-giflossy": "^5.1.10",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
+    "imagemin-zopfli": "^6.0.0",
     "run-sequence": "^2.2.0"
-  },
-  "devDependencies": {
-    "eslint": "^5.6.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-shell": "^0.6.5"
   }
 }
