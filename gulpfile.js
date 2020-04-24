@@ -16,10 +16,6 @@ const minifyCSS = require('gulp-minify-css')
 const babel = require('gulp-babel')
 const sourcemaps = require('gulp-sourcemaps')
 const imagemin = require('gulp-imagemin')
-const imageminPngquant = require('imagemin-pngquant')
-const imageminZopfli = require('imagemin-zopfli')
-const imageminMozjpeg = require('imagemin-mozjpeg')
-const imageminGiflossy = require('imagemin-giflossy')
 
 const banner = [
 	'/**',
@@ -38,31 +34,31 @@ const banner = [
 	''
 ].join('\n')
 
-gulp.task('scss', () => 
+gulp.task('scss', () =>
 	gulp
-		.src(['./scss/**/*.scss'])
-		.pipe(plumber())
-		.pipe(sass().on('error', sass.logError))
-		.pipe(rename('style.css'))
-		.pipe(gulp.dest('./'))
+	.src(['./scss/**/*.scss'])
+	.pipe(plumber())
+	.pipe(sass().on('error', sass.logError))
+	.pipe(rename('style.css'))
+	.pipe(gulp.dest('./'))
 )
 
-gulp.task('combine-css', () => 
+gulp.task('combineCSS', () =>
 	gulp
-		.src([
-			'./css/vendor.css',
-			'./style.css'
-		])
-		.pipe(minifyCSS())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 2 versions']
-			})
-		)
-		.pipe(concat('style.css'))
-		.pipe(header(banner))
-		.pipe(gulp.dest('./'))
-		.pipe(livereload())
+	.src([
+		'./css/vendor.css',
+		'./style.css'
+	])
+	.pipe(minifyCSS())
+	.pipe(
+		autoprefixer({
+			browsers: ['last 2 versions']
+		})
+	)
+	.pipe(concat('style.css'))
+	.pipe(header(banner))
+	.pipe(gulp.dest('./'))
+	.pipe(livereload())
 )
 
 /**
@@ -70,13 +66,30 @@ gulp.task('combine-css', () =>
  * compiling all es6 JavaScript syntax with babel
  * save to `complied.js`
  */
-gulp.task('compileJS', () => 
-	gulp.src('./js/main.js')
-		.pipe(babel({
-			presets: ['@babel/env']
-		}))
-		.pipe(gulp.dest('./js/compiled.js'))
-)
+gulp.task('compileJS', () => {
+	return new Promise((resolve, reject) => {
+		gulp.src('./js/main.js')
+			.pipe(sourcemaps.init())
+			.pipe(babel({
+				presets: ['@babel/preset-env']
+			}))
+			.pipe(terser({
+				compress: {
+					ecma: 2015
+				},
+				ecma: 2015,
+				output: {
+					comments: 'some',
+					beautify: false
+				}
+			}))
+			.pipe(rename('compiled.js'))
+			.pipe(sourcemaps.write('.'))
+			.on('error', reject)
+			.pipe(gulp.dest('./js/'))
+			.on('end', resolve)
+	})
+})
 
 /**
  * Task - concatJS
@@ -84,71 +97,69 @@ gulp.task('compileJS', () =>
  * into one file, called 'clients.js'
  */
 
-gulp.task('concatJS', () => 
-	gulp.src([
-		// add more js files here
-		'./js/vendor/modernizr-3.6.0.min.js', 
-		'./js/compiled.js'
-	])
-	.pipe(plumber())
-	.pipe(
-		concat('clients.js', {
-			newLine: ';'
-		})
-	)
-	.pipe(sourcemaps.init())
-  .pipe(terser({ 
-     mangle: false, 
-     ecma: 6,
-     output: {
-     	comments: 'some'
-     }
-  }))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest('./js/'))
-)
+gulp.task('concatJS', () => {
+	return new Promise((resolve, reject) => {
+		gulp.src([
+				// add more js files here
+				'./js/lib.js',
+				'./js/compiled.js'
+			])
+			.pipe(plumber())
+			.pipe(
+				concat('clients.js', {
+					newLine: ';'
+				})
+			)
+			.on('error', reject)
+			.pipe(gulp.dest('./js/'))
+			.on('end', resolve)
+	})
+})
 
 /**
  * Task - cleanJS
  * Remove unused file `compiled.js` without read.
  */
-gulp.task('cleanJS', () => 
-	gulp.src('./js/compiled.js', {read: false})
-		.pipe(clean())
+gulp.task('cleanCompiledJS', () =>
+	gulp
+	.src([
+		'./js/compiled.js',
+		'./js/compiled.js.map'
+	], {
+		read: false
+	})
+	.pipe(clean())
 )
 
 /**
  * Task - images
  * Compress all image in /img/ folder
- * including png, gif, jpg, zip and svg.
+ * including png, gif, jpg and svg.
  */
-gulp.task('images', () => 
+gulp.task('images', () =>
 	gulp
-		.src('./img/*')
-		.pipe(imagemin([
-			imageminPngquant({
-				speed: 1,
-				quality: [0.95, 1]
-			}),
-			imageminZopfli({
-        more: true
-      }),
-      imageminGiflossy({
-	      optimizationLevel: 3,
-	      optimize: 3,
-	      lossy: 2
-		  }),
-		  imagemin.svgo({
-        plugins: [{
-          removeViewBox: false
-        }]
-      }),
-      imagemin.jpegtran({
-      	quality: 80, 
-      	progressive: true
-      }),
-		]))
-		.pipe(gulp.dest('./img'))
+	.src(['./img/*.{gif,png,jpg,svg}'])
+	.pipe(imagemin([
+		imagemin.gifsicle({
+			interlaced: true,
+			optimizationLevel: 3
+		}), // maximum compress
+		imagemin.jpegtran({
+			quality: 70,
+			progressive: true
+		}), // 0 = worst, 100 = best
+		imagemin.optipng({
+			optimizationLevel: 5
+		}), // 7 = maxmimum
+		imagemin.svgo({
+			plugins: [{
+				removeViewBox: true
+			}, {
+				cleanupIDs: false
+			}]
+		})
+	]))
+	.pipe(gulp.dest('./img'))
 )
 
 /**
@@ -157,7 +168,7 @@ gulp.task('images', () =>
  *** If you use bootstrap-scss with npm install bootstrap-sass
  *** uncomment this line below to let gulp compile to bootstrap.min.css
  */
-gulp.task('lib-scss', () => 
+gulp.task('libSCSS', () =>
 	gulp.src('').pipe(
 		shell([
 			// 'sass --style=compressed ./node_modules/bootstrap/scss/bootstrap.scss ./css/bootstrap.min.css'
@@ -168,50 +179,73 @@ gulp.task('lib-scss', () =>
 /**
  * Task - Library CSS
  * Add your vendor stylesheet files here
- *** eg. bootstrap(from lib-scss task) and magnificpopup
+ *** eg. bootstrap(from libSCSS task) and magnificpopup
  */
-gulp.task('lib-css', () => 
+gulp.task('libCSS', () =>
 	gulp
-		.src([
-			// './css/bootstrap.min.css',
-			// './node_modules/magnific-popup/dist/magnific-popup.css'
-		])
-		.pipe(concat('vendor.css'))
-		.pipe(gulp.dest('./css/'))
+	.src([
+		// './css/bootstrap.min.css',
+		// './node_modules/magnific-popup/dist/magnific-popup.css'
+	])
+	.pipe(concat('vendor.css'))
+	.pipe(gulp.dest('./css/'))
 )
 
 /**
  * Task - Library clean
  * remove unused file from another task.
  */
-gulp.task('lib-clean', () => 
+gulp.task('libClean', () =>
 	gulp
-		.src([
-			'./css/bootstrap.min.css', 
-			'./css/bootstrap.min.css.map'
-		], {
-			read: false
-		})
-		.pipe(clean())
+	.src([
+		// './css/bootstrap.min.css', 
+		// './css/bootstrap.min.css.map'
+	], {
+		read: false
+	})
+	.pipe(clean())
 );
 
-gulp.task('php', () => 
+/**
+ * Task - Concatenate all libraries js files
+ * merge them to lib.js
+ */
+gulp.task('libJSConcat', () =>
+	gulp.src([
+		// add more js files here
+		'./js/vendor/modernizr-3.6.0.min.js',
+	])
+	.pipe(plumber())
+	.pipe(
+		concat('lib.js', {
+			newLine: ';'
+		})
+	)
+	.pipe(gulp.dest('./js/'))
+)
+
+/**
+ * Task - Watch php files changed
+ * if changed, trigger livereload to reload browser
+ */
+gulp.task('php', () =>
 	gulp.src([''])
-		.pipe(livereload())
+	.pipe(livereload())
 )
 
 gulp.task('watch', () => {
-	livereload.listen({ start: true })
-	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss', 'combine-css'))
-	gulp.watch(['./js/main.js'], () => runSequence('compileJS', 'concatJS', 'cleanJS'))
+	livereload.listen({
+		start: true
+	})
+	gulp.watch(['./scss/**/*.scss'], () => runSequence('scss', 'combineCSS'))
+	gulp.watch(['./js/main.js'], () => runSequence('compileJS', 'concatJS', 'cleanCompiledJS'))
 	gulp.watch(['./**/*.php'], () => runSequence('php'))
 })
 
 gulp.task('default', () => runSequence(
-	'scss', 'combine-css', 'compileJS', 'concatJS', 'cleanJS', 'images', 'watch'
+	'scss', 'combineCSS', 'compileJS', 'concatJS', 'cleanCompiledJS', 'watch'
 ))
 
-gulp.task('build-lib-css', () => runSequence(
-	'lib-scss', 'lib-css', 'lib-clean'
+gulp.task('buildLib', () => runSequence(
+	'images', 'libSCSS', 'libCSS', 'libClean', 'libJSConcat'
 ))
-

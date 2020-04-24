@@ -5,7 +5,7 @@
   "main": "index.php",
   "scripts": {
     "dev": "gulp",
-    "vendor": "gulp build-lib-css",
+    "vendor": "gulp buildLib",
     "test": "eslint js/main.js"
   },
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
