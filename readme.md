@@ -1,6 +1,6 @@
 # WordPress Theme Prototype
 
-<a href="https://www.buymeacoffee.com/jir4yu" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-red.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/jir4yu" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-red.png" alt="Buy Me A Coffee" style="height: 32px !important;width: 136px !important;" ></a>
 
 ![Screenshot](screenshot.png)
 
