@@ -9,7 +9,6 @@ This template will help setting up basic file structures and things you need to 
 ## What included?
 
 * Modernizr
-* Flexibility
 * Autoprefixer
 * CSS Minify
 * JS Uglify
