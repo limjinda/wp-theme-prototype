@@ -47,7 +47,7 @@ const vendorStyles = () => gulp
 	.src([
 		// './css/bootstrap.min.css',
 		// './node_modules/magnific-popup/dist/magnific-popup.css'
-	])
+	], {allowEmpty: true})
 	.pipe(concat('vendor.css'))
 	.pipe(gulp.dest('./css/'))
 
@@ -55,13 +55,9 @@ const concatStyles = () => gulp
 	.src([
 		'./css/vendor.css',
 		'./style.css'
-	])
+	], {allowEmpty: true})
 	.pipe(cleanCSS())
-	.pipe(
-		autoprefixer({
-			browsers: ['last 2 versions']
-		})
-	)
+	.pipe(autoprefixer())
 	.pipe(concat('style.css'))
 	.pipe(header(banner))
 	.pipe(gulp.dest('./'))
@@ -104,7 +100,7 @@ const scripts = () => new Promise( (resolve, reject) => {
  .src([
 	 // TODO: add more js files here
 	 './js/vendor/modernizr-3.6.0.min.js',
- ])
+ ], {allowEmpty: true})
  .pipe(
 	 concat('lib.js', {
 		 newLine: ';'
@@ -122,7 +118,7 @@ const concatScripts = () => new Promise((resolve, reject) => {
 			// add more js files here
 			'./js/lib.js',
 			'./js/compiled.js'
-		])
+		], {allowEmpty: true})
 		.pipe(
 			concat('clients.js', {
 				newLine: ';'
@@ -141,7 +137,7 @@ const cleanCompiledScripts = () => gulp
 	.src([
 		'./js/compiled.js',
 		'./js/compiled.js.map'
-	], { read: false })
+	], { read: false, allowEmpty: true })
 	.pipe(clean())
 
 
