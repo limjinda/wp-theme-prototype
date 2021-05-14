@@ -6,8 +6,6 @@ Start developing new WordPress theme with ease.
 
 This template will help setting up basic file structures and things you need to build your own WordPress theme. We use Gulp generator to compile and compress all assets on the fly.
 
-<a href="https://www.buymeacoffee.com/jir4yu" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-red.png" alt="Buy Me A Coffee" width="180" ></a>
-
 ## What included?
 
 * Modernizr
