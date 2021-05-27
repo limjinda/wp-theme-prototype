@@ -1,18 +1,18 @@
-'use strict'
+/* eslint-disable no-undef */
+'use strict';
 
-const gulp = require('gulp')
-const rename = require('gulp-rename')
-const header = require('gulp-header')
-const terser = require('gulp-terser')
-const concat = require('gulp-concat')
-const sass = require('gulp-sass')
-const autoprefixer = require('gulp-autoprefixer')
-const livereload = require('gulp-livereload')
-const clean = require('gulp-clean')
-const cleanCSS = require('gulp-clean-css')
-const babel = require('gulp-babel')
-const sourcemaps = require('gulp-sourcemaps')
-const imagemin = require('gulp-imagemin')
+const gulp = require('gulp');
+const rename = require('gulp-rename');
+const header = require('gulp-header');
+const terser = require('gulp-terser');
+const concat = require('gulp-concat');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
+const livereload = require('gulp-livereload');
+const cleanCSS = require('gulp-clean-css');
+const babel = require('gulp-babel');
+const sourcemaps = require('gulp-sourcemaps');
+const imagemin = require('gulp-imagemin');
 
 const banner = [
 	'/**',
@@ -29,116 +29,77 @@ const banner = [
 	'Text Domain: wpcourse',
 	'*/',
 	''
-].join('\n')
+].join('\n');
 
+/**
+ * Task - styles
+ * transform all scss/sass files to style.css
+ */
 const styles = () => gulp
 	.src(['./scss/**/*.scss'])
+	.pipe(sourcemaps.init())
 	.pipe(sass().on('error', sass.logError))
+	.pipe(autoprefixer())
 	.pipe(rename('style.css'))
+	.pipe(cleanCSS())
+	.pipe(header(banner))
+	.pipe(sourcemaps.write('.'))
 	.pipe(gulp.dest('./'))
+	.pipe(livereload());
+	
+/**
+ * Task - scripts
+ * compiling all es6 JavaScript syntax with babel
+ * save to `complied.js`
+ */
+const scripts = () => gulp
+	.src('./js/main.js')
+	.pipe(sourcemaps.init())
+	.pipe(babel({
+		presets: ['@babel/preset-env']
+	}))
+	.pipe(terser({
+		compress: {
+			ecma: 2015
+		},
+		ecma: 2015,
+		output: {
+			comments: 'some',
+			beautify: false
+		}
+	}))
+	.pipe(rename('complied.js'))
+	.pipe(sourcemaps.write('.'))
+	.pipe(gulp.dest('./js/'))
+	.pipe(livereload());
 
 /**
  * Task - Vendor Styles
  * Add your vendor stylesheet files here
  *** eg. bootstrap, slider or lightbox
  */
-const vendorStyles = () => gulp
-	.src([
-		// './css/bootstrap.min.css',
-		// './node_modules/magnific-popup/dist/magnific-popup.css'
+ const vendorStyles = () => gulp
+ .src([
+		// './node_modules/bootstrap/dist/css/bootstrap.min.css'
 	], {allowEmpty: true})
-	.pipe(concat('vendor.css'))
-	.pipe(gulp.dest('./css/'))
-
-const concatStyles = () => gulp
-	.src([
-		'./css/vendor.css',
-		'./style.css'
-	], {allowEmpty: true})
-	.pipe(cleanCSS())
-	.pipe(autoprefixer())
-	.pipe(concat('style.css'))
-	.pipe(header(banner))
-	.pipe(gulp.dest('./'))
-	.pipe(livereload())
-
-
-/**
- * Task - scripts
- * compiling all es6 JavaScript syntax with babel
- * save to `complied.js`
- */
-const scripts = () => new Promise( (resolve, reject) => {
-	gulp.src('./js/main.js')
-		.pipe(sourcemaps.init())
-		.pipe(babel({
-			presets: ['@babel/preset-env']
-		}))
-		.pipe(terser({
-			compress: {
-				ecma: 2015
-			},
-			ecma: 2015,
-			output: {
-				comments: 'some',
-				beautify: false
-			}
-		}))
-		.pipe(rename('compiled.js'))
-		.pipe(sourcemaps.write('.'))
-		.on('error', reject)
-		.pipe(gulp.dest('./js/'))
-		.on('end', resolve)
-})
+ .pipe(concat('vendor.css'))
+ .pipe(gulp.dest('./css/vendor'));
 
 /**
  * Task - Concatenate all vendor's files
- * merge them to lib.js
+ * merge them to vendor.js
  */
  const vendorScripts = () => gulp
  .src([
-	 // TODO: add more js files here
-	 './js/vendor/modernizr-3.6.0.min.js',
- ], {allowEmpty: true})
+		'./js/vendor/modernizr-3.6.0.min.js', 
+		// './node_modules/bootstrap/dist/js/bootstrap.min.js',
+	], {allowEmpty: true})
  .pipe(
-	 concat('lib.js', {
-		 newLine: ';'
-	 })
+		concat('vendor.js', {
+			newLine: ';'
+		})
  )
- .pipe(gulp.dest('./js/'))
-
-/**
- * Task - concatJS
- * Merge all JavaScript files including main - external libs
- * into one file, called 'clients.js'
- */
-const concatScripts = () => new Promise((resolve, reject) => {
-	gulp.src([
-			// add more js files here
-			'./js/lib.js',
-			'./js/compiled.js'
-		], {allowEmpty: true})
-		.pipe(
-			concat('clients.js', {
-				newLine: ';'
-			})
-		)
-		.on('error', reject)
-		.pipe(gulp.dest('./js/'))
-		.on('end', resolve)
-})
-
-/**
- * Task - cleanJS
- * Remove unused file `compiled.js` without read.
- */
-const cleanCompiledScripts = () => gulp
-	.src([
-		'./js/compiled.js',
-		'./js/compiled.js.map'
-	], { read: false, allowEmpty: true })
-	.pipe(clean())
-
+ .pipe(gulp.dest('./js/vendor'));
 
 /**
  * Task - images
@@ -152,7 +113,7 @@ const images = () => gulp
 			interlaced: true,
 			optimizationLevel: 3
 		}), // maximum compress
-		imagemin.jpegtran({
+		imagemin.mozjpeg({
 			quality: 70,
 			progressive: true
 		}), // 0 = worst, 100 = best
@@ -167,56 +128,36 @@ const images = () => gulp
 			}]
 		})
 	]))
-	.pipe(gulp.dest('./img'))
+	.pipe(gulp.dest('./img'));
 
 /**
  * Task - Watch php files changed
  * if changed, trigger livereload to reload browser
  */
-
 const reloadPHP = () => gulp
 	.src([''])
-	.pipe(livereload())
-
+	.pipe(livereload());
 
 const watch = () => {
-	livereload.listen({ start: true })
-	gulp.watch(['./scss/**/*.scss'], () => gulp.series(
-		styles, concatStyles
-	))
-	gulp.watch(['./js/main.js'], () => gulp.series(
-		scripts, 
-		concatScripts, 
-		cleanCompiledScripts
-	))
-	gulp.watch(['./**/*.php'], () => reloadPHP)
-}
+	livereload.listen({ start: true });
+	gulp.watch(['./scss/**/*.scss'], gulp.series('styles'));
+	gulp.watch(['./js/main.js'], gulp.series('scripts'));
+	gulp.watch(['./*.php', './**/*.php'], reloadPHP);
+};
 
-exports.styles = styles
-exports.vendorStyles = vendorStyles
-exports.concatStyles = concatStyles
+exports.styles = styles;
+exports.vendorStyles = vendorStyles;
 
-exports.scripts = scripts
-exports.vendorScripts = vendorScripts
-exports.concatScripts = concatScripts
-exports.cleanCompiledScripts = cleanCompiledScripts
+exports.scripts = scripts;
+exports.vendorScripts = vendorScripts;
 
-exports.images = images
-exports.reloadPHP = reloadPHP
-exports.watch = watch
+exports.images = images;
+exports.reloadPHP = reloadPHP;
+exports.watch = watch;
 
-const vendor = gulp.series(images, vendorStyles, vendorScripts)
+const vendor = gulp.series(images, vendorStyles, vendorScripts);
+const dev = gulp.series(styles, scripts, watch);
 
-const build = gulp.series(
-	styles, 
-	concatStyles, 
-	scripts, 
-	concatScripts, 
-	cleanCompiledScripts, 
-	watch
-)
-
-exports.vendor = vendor
-exports.build = build
-
-exports.default = build
+exports.vendor = vendor;
+exports.dev = dev;
+exports.default = dev;

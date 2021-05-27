@@ -5,8 +5,7 @@
   "main": "index.php",
   "scripts": {
     "dev": "gulp",
-    "vendor": "gulp vendor",
-    "test": "eslint js/main.js"
+    "vendor": "gulp vendor"
   },
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
   "author": "Jirayu Limjinda <jir4yu.l@gmail.com>",
@@ -19,12 +18,11 @@
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
-    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-header": "^2.0.9",
     "gulp-imagemin": "^7.1.0",
     "gulp-livereload": "^4.0.2",
-    "gulp-clean-css": "^4.3.0",
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-shell": "^0.8.0",
