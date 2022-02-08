@@ -49,7 +49,7 @@ function wp_theme_register_script() {
 	 * Register js script file(js/client.js) 
 	 * dependency on jQuery, and place this before close body tag
 	 */
-	wp_register_script('wp-client', get_theme_file_uri('/js/complied.js'), array('jquery'), '1.0.0', true);
+	wp_register_script('wp-client', get_theme_file_uri('/js/compiled.js'), array('jquery'), '1.0.0', true);
 
 	/**
 	 * Uncomment if you want to pass an php variebles to js-script

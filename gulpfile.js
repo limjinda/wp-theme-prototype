@@ -154,7 +154,7 @@ const images = () =>
  * Task - Watch php files changed
  * if changed, trigger livereload to reload browser
  */
-const reloadPHP = () => gulp.src(['']).pipe(livereload())
+const reloadPHP = () => gulp.src('.', { allowEmpty: true }).pipe(livereload())
 
 const watch = () => {
   livereload.listen({ start: true })
