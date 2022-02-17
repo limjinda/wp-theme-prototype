@@ -10,7 +10,6 @@
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
   "author": "Jirayu Limjinda <jir4yu.l@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.14.2",
     "@babel/preset-env": "^7.14.2",
@@ -24,7 +23,7 @@
     "gulp-imagemin": "^7.1.0",
     "gulp-livereload": "^4.0.2",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.1.0",
     "gulp-shell": "^0.8.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-terser": "^2.0.1",
@@ -32,6 +31,7 @@
     "imagemin-giflossy": "^5.1.10",
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^8.0.0",
-    "imagemin-zopfli": "^6.0.0"
+    "imagemin-zopfli": "^6.0.0",
+    "sass": "^1.49.7"
   }
 }
