@@ -1,11 +1,14 @@
 {
   "name": "wp-theme-prototype",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "WordPress theme prototype with Gulp asset pipeline includes SASS, Uglify, Imagemin and more",
   "main": "index.php",
   "scripts": {
     "dev": "gulp",
     "vendor": "gulp vendor"
+  },
+  "engines": {
+    "node": ">= 16.0.0"
   },
   "repository": "https://github.com/jir4yu/wp-theme-prototype.git",
   "author": "Jirayu Limjinda <jir4yu.l@gmail.com>",
@@ -32,6 +35,6 @@
     "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^8.0.0",
     "imagemin-zopfli": "^6.0.0",
-    "sass": "^1.49.7"
+    "sass": "^1.64.1"
   }
 }

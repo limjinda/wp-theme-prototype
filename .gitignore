@@ -2,3 +2,5 @@ node_modules
 style.css.map
 css/vender.css
 .sass-cache
+js/compiled.js
+js/compiled.js.map

@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":["console","log"],"mappings":"AAIA,aAEAA,QAAQC,IAAI","file":"compiled.js","sourcesContent":["/* eslint-disable no-console */\n/* global */\n/* exported */\n\n'use strict';\n\nconsole.log('hello World');"]}
